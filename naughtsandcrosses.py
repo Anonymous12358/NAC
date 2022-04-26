@@ -45,12 +45,24 @@ def play(get_move_func):
         yield "Draw", board
 
 
-def main():
-    game = play(lambda _: map(int, input("Enter move in `x y` format: ").split()))
+def cli_get_move(board):
+    while True:
+        try:
+            x, y = map(int, input("Enter move in `x y` format: ").split())
+            if board.data[y][x] == 0:
+                return x, y
+        except ValueError | IndexError:
+            print("Please enter two integers within range, separated by a space")
+        else:
+            print("Please select an empty location")
+
+
+def cli():
+    game = play(cli_get_move)
     for printout, board in game:
         print(printout)
         print(board)
 
 
 if __name__ == '__main__':
-    main()
+    cli()
