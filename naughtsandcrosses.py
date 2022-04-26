@@ -3,24 +3,24 @@ import itertools
 
 
 class Board:
-    SYMBOLS = "X", "O"
+    SYMBOLS = ".", "X", "O"
 
     def __init__(self):
-        self.__data = np.zeroes((3, 3))
+        self.__data = np.zeros((3, 3), dtype=np.uint8)
 
     @property
     def data(self):
         return self.__data
 
-    def stringify_board(self):
-        return "\n".join("".join(Board.SYMBOLS[row]) for row in self.data)
+    def __str__(self):
+        return "\n".join("".join(Board.SYMBOLS[entry] for entry in row) for row in self.data)
 
     def get_winner(self):
         for line in itertools.chain(
                 self.data,
                 self.data.transpose(),
                 (self.data.diagonal(),
-                 self.data.transpose.diagonal())):
+                 self.data.transpose().diagonal())):
             if (line == 1).all():
                 return 1
             elif (line == 2).all():
@@ -46,9 +46,10 @@ def play(get_move_func):
 
 
 def main():
-    game = play(lambda _: input("Enter move in `x y` format: ").split())
-    for output in game:
-        print(output)
+    game = play(lambda _: map(int, input("Enter move in `x y` format: ").split()))
+    for printout, board in game:
+        print(printout)
+        print(board)
 
 
 if __name__ == '__main__':
