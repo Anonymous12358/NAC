@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import itertools
 
@@ -51,7 +52,7 @@ def cli_get_move(board):
             x, y = map(int, input("Enter move in `x y` format: ").split())
             if board.data[y][x] == 0:
                 return x, y
-        except ValueError | IndexError:
+        except (ValueError, IndexError):
             print("Please enter two integers within range, separated by a space")
         else:
             print("Please select an empty location")
@@ -65,4 +66,10 @@ def cli():
 
 
 if __name__ == '__main__':
-    cli()
+    parser = argparse.ArgumentParser("naughtsandcrosses")
+    parser.add_argument("ui", help="t for cli; g for gui (not implemented)", type=str, choices=("t", "g"))
+    args = parser.parse_args()
+    if args.ui == "t":
+        cli()
+    elif args.ui == "g":
+        raise NotImplementedError
